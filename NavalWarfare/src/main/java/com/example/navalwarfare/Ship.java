@@ -9,9 +9,8 @@ import java.util.ArrayList;
 
 public class Ship {
 
-    private String shipName;
-    private ArrayList<Button> shipButtons = new ArrayList<>();
-    private boolean alive = true;
+    private final String shipName;
+    private final ArrayList<Button> shipButtons;
 
     public Ship(String shipName, ArrayList<Button> shipButtons) {
         this.shipName = shipName;
@@ -27,20 +26,17 @@ public class Ship {
             if (shipButton == buttonGuess) {
 
                 editButton(buttonGuess);
+                GuiController.getButtonList().remove(buttonGuess);
                 shipButtons.remove(buttonGuess);
-                GuiController.buttonList.remove(buttonGuess);
                 status = "hit";
 
                 if (shipButtons.isEmpty()) {
-                    alive = false;
                     status = "sunk";
                 }
                 break;
             }
         }
-
         return status;
-
     }
 
     // Change button appearance
@@ -52,6 +48,7 @@ public class Ship {
 
     }
 
+    // Getters and setters
     public String getShipName() {
         return this.shipName;
     }

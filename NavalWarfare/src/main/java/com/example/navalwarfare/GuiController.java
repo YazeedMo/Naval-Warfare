@@ -2,11 +2,10 @@ package com.example.navalwarfare;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,27 +15,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class GuiController {
 
+    // Gui components
     @FXML
     private GridPane boardGrid;
-
     @FXML
     private Label guessNumberLabel;
-
     @FXML
     private Label remainingShipsLabel;
-
     @FXML
     private Label notificationLabel;
-
     @FXML
     private Button restartButton;
 
-    public static ArrayList<Button> buttonList = new ArrayList<>();
-
+    private static ArrayList<Button> buttonList;
     private Game game;
 
     @FXML
@@ -74,6 +68,8 @@ public class GuiController {
     // Fills boarderGrid with buttons
     private void setButtons() {
 
+        buttonList = new ArrayList<>();
+
         for (int i = 1; i < 11; i++) {
             for (int j = 1; j < 11; j++) {
                 Button button = createButton();
@@ -81,6 +77,22 @@ public class GuiController {
                 buttonList.add(button);
             }
         }
+    }
+
+    // Shows instructions
+    private void displayInstructions() {
+
+        notificationLabel.setText("""
+                There are 5 ships:
+                Destroyer:\t 2 blocks
+                Submarine:\t 3 blocks
+                Cruiser:\t\t 3 blocks
+                Battleship:\t 4 blocks
+                Aircraft Carrier: 5 blocks
+                
+                Sink all ships to win.
+                GoodLuck!!!""");
+
     }
 
     // Creates label
@@ -124,50 +136,54 @@ public class GuiController {
         button.setBorder(border);
 
         // Action handler
-        button.setOnAction(e -> {
-            String result = game.checkUserGuess((Button) e.getSource());
-            notificationLabel.setText(result);
-            remainingShipsLabel.setText(String.valueOf(Game.shipsList.size()));
-            guessNumberLabel.setText(String.valueOf(Game.numGuess));
-
-            // Check if all ships are sunk
-            if (Integer.parseInt(remainingShipsLabel.getText()) == 0) {
-
-                // Disable all buttons
-                ObservableList<Node> children = boardGrid.getChildren();
-
-                for (Node node : children) {
-                    if (node instanceof Button gridButton) {
-                        gridButton.setDisable(true);
-                    }
-                }
-
-                notificationLabel.setText("All ships have sunk!\n" +
-                        "It took you " + guessNumberLabel.getText() + " moves");
-
-                restartButton.setVisible(true);
-                restartButton.setDisable(false);
-            }
-
-        });
+        buttonClicked buttonClicked = new buttonClicked();
+        button.setOnAction(buttonClicked);
 
         return button;
+    }
+
+    // Button EventHandler
+    private class buttonClicked implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent event) {
+
+            Button buttonClicked = (Button) event.getSource();
+
+            updateGui(buttonClicked);
+
+            // Check if all ships are dead
+            if (game.getShipsList().isEmpty()) {
+                endGame();
+            }
+        }
+    }
+
+    // Updates all Gui components
+    private void updateGui(Button button) {
+
+        String result = game.checkUserGuess(button);
+        guessNumberLabel.setText(String.valueOf(game.getNumGuess()));
+        remainingShipsLabel.setText(String.valueOf(game.getShipsList().size()));
+        notificationLabel.setText(result);
 
     }
 
-    // Shows instructions
-    private void displayInstructions() {
+    // End of game
+    private void endGame() {
 
-        notificationLabel.setText("""
-                There are 5 ships:
-                Destroyer: 2 blocks
-                Submarine: 3 blocks
-                Cruiser: 3 blocks
-                Battleship: 4 blocks
-                Aircraft Carrier: 5 blocks
-                
-                Sink all ships to win.
-                GoodLuck!!!""");
+        // Disable all buttons
+        ObservableList<Node> children = boardGrid.getChildren();
+        for (Node node : children) {
+            if (node instanceof Button gridButton) {
+                gridButton.setDisable(true);
+            }
+        }
+
+        notificationLabel.setText(game.gameOverMessage());
+
+        restartButton.setVisible(true);
+        restartButton.setDisable(false);
 
     }
 
@@ -175,17 +191,21 @@ public class GuiController {
     @FXML
     private void restartGame(ActionEvent event) throws IOException {
 
-        game.endGame();
+        game.gameOverMessage();
 
         // Reset the stage and scene
         Node node = (Node) event.getSource();
         Scene scene = node.getScene();
         Stage stage = (Stage) scene.getWindow();
-        stage.close();
 
         NavalWarfareApplication navalWarfareApplication = new NavalWarfareApplication();
         navalWarfareApplication.start(stage);
 
+    }
+
+    // Getters and setters
+    public static ArrayList<Button> getButtonList() {
+        return buttonList;
     }
 
 }

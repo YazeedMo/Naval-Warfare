@@ -9,21 +9,22 @@ import java.util.ArrayList;
 
 public class Game {
 
-    public static ArrayList<Ship> shipsList = new ArrayList<>();
-    public static int numGuess = 0;
+    private ArrayList<Ship> shipsList;
+    private int numGuess;
 
     private final ShipPlacer shipPlacer = new ShipPlacer();
 
     public void startGame() {
 
         setUpGame();
-        // get button clicks and check all ship statuses
-        // track number of guesses
 
     }
 
     // Creates ships
     private void setUpGame() {
+
+        shipsList = new ArrayList<>();
+        numGuess = 0;
 
         Ship ship1 = new Ship("Aircraft Carrier", shipPlacer.assignShipButtons(5));
         Ship ship2 = new Ship("Battleship", shipPlacer.assignShipButtons(4));
@@ -41,28 +42,12 @@ public class Game {
 
     public String checkUserGuess(Button button) {
 
-        String result = "miss";
+        String result;
 
         if (button.getUserData() == null || !button.getUserData().equals("Clicked")) {
-
             numGuess++;
-
-            button.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
-
-            for (Ship ship : shipsList) {
-                String shipStatus = ship.checkStatus(button);
-
-                if (!shipStatus.equals("miss")) {
-                    if (shipStatus.equals("hit")) {
-                        result = "You hit " + ship.getShipName();
-                        break;
-                    } else {
-                        shipsList.remove(ship);
-                        result = ship.getShipName() + " has sunk!";
-                    }
-                    break;
-                }
-            }
+            setButtonColor(button);
+            result = checkShips(button);
             button.setUserData("Clicked");
         }
         else {
@@ -71,14 +56,53 @@ public class Game {
         return result;
     }
 
-    public void endGame() {
+    // Set button color
+    private void setButtonColor(Button button) {
 
-        // Reset all static variables
-        Game.numGuess = 0;
-        Game.shipsList.clear();
+        BackgroundFill backgroundFill = new BackgroundFill(Color.GRAY, null, null);
+        Background background = new Background(backgroundFill);
+        button.setBackground(background);
 
-        GuiController.buttonList.clear();
+    }
 
+    // Checks status of ships
+    private String checkShips(Button button) {
+
+        String result = "miss";
+
+        for (Ship ship : shipsList) {
+
+            String shipStatus = ship.checkStatus(button);
+
+            if (!shipStatus.equals("miss")) {
+                if (shipStatus.equals("hit")) {
+                    result = "You hit " + ship.getShipName();
+                    break;
+                }
+                else {
+                    shipsList.remove(ship);
+                    result = ship.getShipName() + " has sunk!";
+                }
+                break;
+            }
+        }
+        return result;
+    }
+
+    public String gameOverMessage() {
+
+        return "You sunk all ships!\n" +
+                "It took you " + numGuess + " guesses.";
+
+    }
+
+    // Getters and setters
+    public ArrayList<Ship> getShipsList() {
+        return this.shipsList;
+    }
+
+    public int getNumGuess() {
+        return this.numGuess;
     }
 
 

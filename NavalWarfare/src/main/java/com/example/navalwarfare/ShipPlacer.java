@@ -1,9 +1,6 @@
 package com.example.navalwarfare;
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +8,7 @@ import java.util.Random;
 
 public class ShipPlacer {
 
-    private final int TOT_NUM_BUTTONS = GuiController.buttonList.size();
-
+    private final int TOT_NUM_BUTTONS = GuiController.getButtonList().size();
     private final int HORIZONTAL_INCREMENT = 1;
 
     public ArrayList<Button> assignShipButtons(int shipSize) {
@@ -26,10 +22,8 @@ public class ShipPlacer {
 
         while (!success && (attempt < maxAttempts)) {
 
-            // Assign random button to ship's first block
             finalShipButtons[0] = getRandomButton();
 
-            // Determine random orientation
             int orientationIncrement = getOrientationIncrement();
 
             // Add rest of buttons (try catch because increment might add button index out of bounds)
@@ -40,7 +34,6 @@ public class ShipPlacer {
                 continue;
             }
 
-            // Check if ship buttons fits properly on the grid
             if (shipFits(finalShipButtons, orientationIncrement) && buttonsAvailable(finalShipButtons)) {
                 finaliseButtons(finalShipButtons);
 
@@ -59,7 +52,7 @@ public class ShipPlacer {
 
         Random random = new Random();
         int randomIndex = random.nextInt(TOT_NUM_BUTTONS);
-        return GuiController.buttonList.get(randomIndex);
+        return GuiController.getButtonList().get(randomIndex);
 
     }
 
@@ -79,11 +72,11 @@ public class ShipPlacer {
         int buttonListSize = buttonList.length;
 
         Button firstButton = buttonList[0];
-        int buttonListIndex = GuiController.buttonList.indexOf(firstButton);
+        int buttonListIndex = GuiController.getButtonList().indexOf(firstButton);
 
         for (int i = 1; i < buttonListSize; i++) {
             buttonListIndex = buttonListIndex + increment;
-            Button nextButton = GuiController.buttonList.get(buttonListIndex);
+            Button nextButton = GuiController.getButtonList().get(buttonListIndex);
             buttonList[i] = nextButton;
         }
 
@@ -101,16 +94,15 @@ public class ShipPlacer {
         }
         else {
             // Check if last button fits on grid
-            int lastButtonIndex = GuiController.buttonList.indexOf(lastButton);
-            return (lastButtonIndex < GuiController.buttonList.size());
+            int lastButtonIndex = GuiController.getButtonList().indexOf(lastButton);
+            return (lastButtonIndex < GuiController.getButtonList().size());
         }
-
     }
 
     // Calculates row number based on index
     private int getRowNumber(Button button) {
 
-        int buttonListIndex = GuiController.buttonList.indexOf(button);
+        int buttonListIndex = GuiController.getButtonList().indexOf(button);
         return (buttonListIndex / 10) - 1;
 
     }

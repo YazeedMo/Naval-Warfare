@@ -4,24 +4,39 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+// Made using Singleton pattern
 public class Game {
 
+    // Singleton only class
+    private static Game instance;
+
     private ArrayList<Ship> shipsList;
+    private int shipsRemaining;
     private int numGuess;
+    private String notification;
 
-    private final ShipPlacer shipPlacer = new ShipPlacer();
-
-    public void startGame() {
-
+    // Singleton private constructor
+    private Game() {
         setUpGame();
-
     }
 
-    // Creates ships
-    private void setUpGame() {
+    // Singleton get only instance
+    public static Game getInstance() {
+        if (instance == null) {
+            instance = new Game();
+        }
+        return instance;
+    }
+
+    // Creates and places ships on board
+    public void setUpGame() {
+
+        ShipPlacer shipPlacer = new ShipPlacer();
 
         shipsList = new ArrayList<>();
         numGuess = 0;
@@ -40,20 +55,24 @@ public class Game {
 
     }
 
-    public String checkUserGuess(Button button) {
+    // Determine outcome of player guess
+    public void checkUserGuess(Button button) {
 
-        String result;
-
+        // If button has not yet been clicked, check if any ships have been affected
         if (button.getUserData() == null || !button.getUserData().equals("Clicked")) {
-            numGuess++;
             setButtonColor(button);
-            result = checkShips(button);
             button.setUserData("Clicked");
+            numGuess++;
+            notification = checkShips(button);
+            shipsRemaining = shipsList.size();
+            if (shipsRemaining == 0 ) {
+                notification = "All ships are dead!\n" +
+                        "It took you " + numGuess + " guesses.";
+            }
         }
         else {
-            result = "Already clicked";
+            notification = "Already clicked";
         }
-        return result;
     }
 
     // Set button color
@@ -89,20 +108,27 @@ public class Game {
         return result;
     }
 
-    public String gameOverMessage() {
+    // Restarts the game
+    public void restartGame(Stage stage) throws IOException {
 
-        return "You sunk all ships!\n" +
-                "It took you " + numGuess + " guesses.";
+        // Reset Game instance
+        instance = null;
+
+        new NavalWarfareApplication().start(stage);
 
     }
 
     // Getters and setters
-    public ArrayList<Ship> getShipsList() {
-        return this.shipsList;
+    public int getShipsRemaining() {
+        return this.shipsRemaining;
     }
 
     public int getNumGuess() {
         return this.numGuess;
+    }
+
+    public String getNotification() {
+        return this.notification;
     }
 
 

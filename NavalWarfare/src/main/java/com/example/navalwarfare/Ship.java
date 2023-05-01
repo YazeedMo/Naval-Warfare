@@ -26,7 +26,6 @@ public class Ship {
             if (shipButton == buttonGuess) {
 
                 editButton(buttonGuess);
-                GuiController.getButtonList().remove(buttonGuess);
                 shipButtons.remove(buttonGuess);
                 status = "hit";
 

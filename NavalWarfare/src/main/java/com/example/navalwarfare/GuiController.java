@@ -31,6 +31,7 @@ public class GuiController {
     private Button restartButton;
 
     private static ArrayList<Button> buttonList;
+
     private Game game;
 
     @FXML
@@ -42,8 +43,7 @@ public class GuiController {
 
         displayInstructions();
 
-        game = new Game();
-        game.startGame();
+        game = Game.getInstance();
 
     }
 
@@ -149,23 +149,23 @@ public class GuiController {
         public void handle(ActionEvent event) {
 
             Button buttonClicked = (Button) event.getSource();
+            game.checkUserGuess(buttonClicked);
 
-            updateGui(buttonClicked);
+            updateGui();
 
             // Check if all ships are dead
-            if (game.getShipsList().isEmpty()) {
+            if (game.getShipsRemaining() == 0) {
                 endGame();
             }
         }
     }
 
     // Updates all Gui components
-    private void updateGui(Button button) {
+    private void updateGui() {
 
-        String result = game.checkUserGuess(button);
         guessNumberLabel.setText(String.valueOf(game.getNumGuess()));
-        remainingShipsLabel.setText(String.valueOf(game.getShipsList().size()));
-        notificationLabel.setText(result);
+        remainingShipsLabel.setText(String.valueOf(game.getShipsRemaining()));
+        notificationLabel.setText(game.getNotification());
 
     }
 
@@ -180,7 +180,7 @@ public class GuiController {
             }
         }
 
-        notificationLabel.setText(game.gameOverMessage());
+        updateGui();
 
         restartButton.setVisible(true);
         restartButton.setDisable(false);
@@ -191,15 +191,12 @@ public class GuiController {
     @FXML
     private void restartGame(ActionEvent event) throws IOException {
 
-        game.gameOverMessage();
-
         // Reset the stage and scene
         Node node = (Node) event.getSource();
         Scene scene = node.getScene();
         Stage stage = (Stage) scene.getWindow();
 
-        NavalWarfareApplication navalWarfareApplication = new NavalWarfareApplication();
-        navalWarfareApplication.start(stage);
+        game.restartGame(stage);
 
     }
 

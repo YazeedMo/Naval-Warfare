@@ -23,7 +23,6 @@ public class ShipPlacer {
         while (!success && (attempt < maxAttempts)) {
 
             finalShipButtons[0] = getRandomButton();
-
             int orientationIncrement = getOrientationIncrement();
 
             // Add rest of buttons (try catch because increment might add button index out of bounds)
@@ -34,9 +33,9 @@ public class ShipPlacer {
                 continue;
             }
 
+            // Check if ship fits and if the button are available
             if (shipFits(finalShipButtons, orientationIncrement) && buttonsAvailable(finalShipButtons)) {
                 finaliseButtons(finalShipButtons);
-
                 success = true;
             }
             else {
@@ -129,6 +128,4 @@ public class ShipPlacer {
         }
 
     }
-
-
 }

@@ -41,10 +41,9 @@ public class GuiController {
 
         setButtons();
 
-        displayInstructions();
-
         game = Game.getInstance();
 
+        updateGui();
     }
 
     // Places alphanumeric coordinates on grid axis
@@ -77,22 +76,6 @@ public class GuiController {
                 buttonList.add(button);
             }
         }
-    }
-
-    // Shows instructions
-    private void displayInstructions() {
-
-        notificationLabel.setText("""
-                There are 5 ships:
-                Destroyer:\t 2 blocks
-                Submarine:\t 3 blocks
-                Cruiser:\t\t 3 blocks
-                Battleship:\t 4 blocks
-                Aircraft Carrier: 5 blocks
-                
-                Sink all ships to win.
-                GoodLuck!!!""");
-
     }
 
     // Creates label
@@ -191,7 +174,7 @@ public class GuiController {
     @FXML
     private void restartGame(ActionEvent event) throws IOException {
 
-        // Reset the stage and scene
+        // Get stage
         Node node = (Node) event.getSource();
         Scene scene = node.getScene();
         Stage stage = (Stage) scene.getWindow();

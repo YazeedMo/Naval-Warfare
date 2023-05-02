@@ -1,5 +1,8 @@
 package com.example.navalwarfare;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -8,12 +11,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // Made using Singleton pattern
 public class Game {
 
     // Singleton only class
     private static Game instance;
+
+    // Optional bot for testing
+    private final Bot tester = new Bot();
 
     private ArrayList<Ship> shipsList;
     private int shipsRemaining;
@@ -52,6 +61,22 @@ public class Game {
         shipsList.add(ship3);
         shipsList.add(ship4);
         shipsList.add(ship5);
+
+        shipsRemaining = shipsList.size();
+        numGuess = 0;
+        notification = """
+                There are 5 ships:
+                Destroyer:\t 2 blocks
+                Submarine:\t 3 blocks
+                Cruiser:\t\t 3 blocks
+                Battleship:\t 4 blocks
+                Aircraft Carrier: 5 blocks
+                
+                Sink all ships to win.
+                GoodLuck!!!""";
+
+        // Optional test loop
+        // test();
 
     }
 
@@ -114,7 +139,18 @@ public class Game {
         // Reset Game instance
         instance = null;
 
-        new NavalWarfareApplication().start(stage);
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("NavalWarfare.fxml")));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+
+    }
+
+    // Optional test method
+    public void test() {
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(tester);
+        executor.shutdown();
 
     }
 

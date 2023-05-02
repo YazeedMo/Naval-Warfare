@@ -19,6 +19,10 @@ public class NavalWarfareApplication extends Application {
         stage.setTitle("Naval Warfare");
         stage.setScene(scene);
         stage.show();
-
     }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 }

@@ -10,10 +10,12 @@ import java.util.ArrayList;
 public class Ship {
 
     private final String shipName;
+    private final Color shipColor;
     private final ArrayList<Button> shipButtons;
 
-    public Ship(String shipName, ArrayList<Button> shipButtons) {
+    public Ship(String shipName, Color color, ArrayList<Button> shipButtons) {
         this.shipName = shipName;
+        this.shipColor = color;
         this.shipButtons = shipButtons;
     }
 
@@ -41,7 +43,7 @@ public class Ship {
     // Change button appearance
     private void editButton(Button button) {
 
-        BackgroundFill backgroundFill = new BackgroundFill(Color.RED, null, null);
+        BackgroundFill backgroundFill = new BackgroundFill(shipColor, null, null);
         Background background = new Background(backgroundFill);
         button.setBackground(background);
 

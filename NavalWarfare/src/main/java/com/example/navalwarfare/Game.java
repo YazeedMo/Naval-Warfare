@@ -50,11 +50,11 @@ public class Game {
         shipsList = new ArrayList<>();
         numGuess = 0;
 
-        Ship ship1 = new Ship("Aircraft Carrier", shipPlacer.assignShipButtons(5));
-        Ship ship2 = new Ship("Battleship", shipPlacer.assignShipButtons(4));
-        Ship ship3 = new Ship("Cruiser", shipPlacer.assignShipButtons(3));
-        Ship ship4 = new Ship("Submarine", shipPlacer.assignShipButtons(3));
-        Ship ship5 = new Ship("Destroyer", shipPlacer.assignShipButtons(2));
+        Ship ship1 = new Ship("Aircraft Carrier", Color.ORANGE, shipPlacer.assignShipButtons(5));
+        Ship ship2 = new Ship("Battleship", Color.RED, shipPlacer.assignShipButtons(4));
+        Ship ship3 = new Ship("Destroyer", Color.YELLOW, shipPlacer.assignShipButtons(3));
+        Ship ship4 = new Ship("Submarine", Color.GREEN, shipPlacer.assignShipButtons(3));
+        Ship ship5 = new Ship("Patrol Boat", Color.PURPLE, shipPlacer.assignShipButtons(2));
 
         shipsList.add(ship1);
         shipsList.add(ship2);
@@ -76,7 +76,7 @@ public class Game {
                 GoodLuck!!!""";
 
         // Optional test loop
-        // test();
+        test();
 
     }
 

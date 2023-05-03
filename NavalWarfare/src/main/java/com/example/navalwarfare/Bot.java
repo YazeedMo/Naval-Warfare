@@ -27,22 +27,24 @@ public class Bot implements Runnable {
         ArrayList<Button> buttonList = GuiController.getButtonList();
         int numButtons = buttonList.size();
 
+        sleep(2000);
+
         for (int i = 0; i < 3; i++) {
             while (game.getShipsRemaining() > 0) {
                 int randomIndex = random.nextInt(numButtons);
                 Button randomButton = buttonList.get(randomIndex);
                 if (randomButton.getUserData() == null || !randomButton.getUserData().equals("Clicked")) {
                     Platform.runLater(randomButton::fire);
-                    sleep();
+                    sleep(100);
                 }
             }
         }
     }
 
-    private void sleep() {
+    private void sleep(int milliseconds) {
 
         try {
-            TimeUnit.MILLISECONDS.sleep(100);
+            TimeUnit.MILLISECONDS.sleep(milliseconds);
         }
         catch (Exception e) {
             e.printStackTrace();

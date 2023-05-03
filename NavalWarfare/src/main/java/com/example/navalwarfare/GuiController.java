@@ -87,6 +87,15 @@ public class GuiController {
         label.setMaxHeight(Double.MAX_VALUE);
         label.setMaxWidth(Double.MAX_VALUE);
 
+        // Border
+        Color borderColor = Color.BLACK;
+        BorderStrokeStyle borderStrokeStyle = BorderStrokeStyle.SOLID;
+        CornerRadii cornerRadii = new CornerRadii(1);
+        BorderWidths borderWidths = new BorderWidths(1);
+        BorderStroke borderStroke = new BorderStroke(borderColor, borderStrokeStyle, cornerRadii, borderWidths);
+        Border border = new Border(borderStroke);
+        label.setBorder(border);
+
         // Layout
         label.setAlignment(Pos.CENTER);
 

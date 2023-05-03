@@ -7,11 +7,12 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.navalwarfare.GuiController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="883.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.navalwarfare.GuiController">
    <center>
       <GridPane fx:id="boardGrid" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -41,7 +42,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <BorderPane.margin>
-            <Insets bottom="30.0" left="40.0" />
+            <Insets />
          </BorderPane.margin>
       </GridPane>
    </center>
@@ -57,7 +58,7 @@
       </HBox>
    </top>
    <right>
-      <VBox alignment="TOP_CENTER" prefHeight="465.0" prefWidth="227.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="465.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="Number of guesses:">
                <font>
@@ -85,13 +86,13 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="notificationLabel" text="Notifications">
-               <VBox.margin>
-                  <Insets top="70.0" />
-               </VBox.margin>
+            <Label fx:id="notificationLabel" alignment="CENTER" contentDisplay="CENTER" text="Notifications">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="70.0" />
+               </VBox.margin>
             </Label>
             <Button fx:id="restartButton" mnemonicParsing="false" onAction="#restartGame" text="Restart" visible="false">
                <VBox.margin>
@@ -103,8 +104,14 @@
             <Insets right="30.0" top="30.0" />
          </padding>
          <BorderPane.margin>
-            <Insets right="15.0" />
+            <Insets />
          </BorderPane.margin>
       </VBox>
    </right>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <bottom>
+      <Pane prefHeight="113.0" prefWidth="883.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

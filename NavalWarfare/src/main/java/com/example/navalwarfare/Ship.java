@@ -54,4 +54,12 @@ public class Ship {
         return this.shipName;
     }
 
+    public Color getShipColor() {
+        return this.shipColor;
+    }
+
+    public int getShipSize() {
+        return this.shipButtons.size();
+    }
+
 }

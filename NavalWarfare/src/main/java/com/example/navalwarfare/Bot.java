@@ -35,7 +35,7 @@ public class Bot implements Runnable {
                 Button randomButton = buttonList.get(randomIndex);
                 if (randomButton.getUserData() == null || !randomButton.getUserData().equals("Clicked")) {
                     Platform.runLater(randomButton::fire);
-                    sleep(100);
+                    sleep(200);
                 }
             }
         }

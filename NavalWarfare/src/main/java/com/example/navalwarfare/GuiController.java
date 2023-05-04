@@ -11,6 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,10 +32,14 @@ public class GuiController {
     private Label notificationLabel;
     @FXML
     private Button restartButton;
+    @FXML
+    private VBox shipStatusLabelVBox;
+
+    private Game game;
 
     private static ArrayList<Button> buttonList;
 
-    private Game game;
+    private ArrayList<Label> shipStatusLabels;
 
     @FXML
     private void initialize() {
@@ -43,6 +50,8 @@ public class GuiController {
 
         game = Game.getInstance();
 
+        setShipStatusLabels();
+
         updateGui();
     }
 
@@ -52,13 +61,13 @@ public class GuiController {
         // Letters
         String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         for (int i = 1; i < 11; i++) {
-            Label letterLabel = createLabel(alphabet[i - 1]);
+            Label letterLabel = createBoardGridLabels(alphabet[i - 1]);
             boardGrid.add(letterLabel, 0, i);
         }
 
         // Numbers
         for (int i = 1; i < 11; i++) {
-            Label numberLabel = createLabel(String.valueOf(i));
+            Label numberLabel = createBoardGridLabels(String.valueOf(i));
             boardGrid.add(numberLabel, i, 0);
         }
 
@@ -71,15 +80,34 @@ public class GuiController {
 
         for (int i = 1; i < 11; i++) {
             for (int j = 1; j < 11; j++) {
-                Button button = createButton();
+                Button button = createBoardGridButtons();
                 boardGrid.add(button, j, i);
                 buttonList.add(button);
             }
         }
     }
 
+    // Link each ship with a ship status label
+    private void setShipStatusLabels() {
+
+        // ArrayList that will store all labels
+        shipStatusLabels = new ArrayList<>();
+
+        // Get number of ships
+        int numShips = game.getShipsList().size();
+
+        // Create a label for each ship and link the label to its ship
+        for (int i = 0; i < numShips; i++) {
+            Label label = createShipStatusLabel();
+            label.setUserData(game.getShipsList().get(i));  // Link ship to label
+            shipStatusLabels.add(label);
+            shipStatusLabelVBox.getChildren().add(label);  // Add label to GUI
+        }
+
+    }
+
     // Creates label
-    private Label createLabel(String str) {
+    private Label createBoardGridLabels(String str) {
 
         Label label = new Label(str);
 
@@ -104,7 +132,7 @@ public class GuiController {
     }
 
     // Creates button
-    private Button createButton() {
+    private Button createBoardGridButtons() {
 
         Button button = new Button();
 
@@ -134,6 +162,19 @@ public class GuiController {
         return button;
     }
 
+    // Creates label for ship statuses
+    private Label createShipStatusLabel() {
+
+        Label label = new Label();
+
+        // Font
+        Font font = Font.font("System", FontWeight.BOLD, 15);
+        label.setFont(font);
+
+        return label;
+
+    }
+
     // Button EventHandler
     private class buttonClicked implements EventHandler<ActionEvent> {
 
@@ -158,6 +199,19 @@ public class GuiController {
         guessNumberLabel.setText(String.valueOf(game.getNumGuess()));
         remainingShipsLabel.setText(String.valueOf(game.getShipsRemaining()));
         notificationLabel.setText(game.getNotification());
+
+        // shipsStatusLabels updates
+        for (int i = 0; i < game.getShipsList().size(); i++) {
+
+            Label label = shipStatusLabels.get(i);
+            Ship ship = (Ship) shipStatusLabels.get(i).getUserData();
+
+            Text shipName = new Text(ship.getShipName());
+            shipName.setFont(Font.font("System", FontWeight.BOLD, 15));
+            shipName.setFill(ship.getShipColor());
+            label.setGraphic(shipName);
+            label.setText(": " + ship.getShipSize());
+        }
 
     }
 

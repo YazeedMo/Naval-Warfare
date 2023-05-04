@@ -64,19 +64,10 @@ public class Game {
 
         shipsRemaining = shipsList.size();
         numGuess = 0;
-        notification = """
-                There are 5 ships:
-                Destroyer:\t 2 blocks
-                Submarine:\t 3 blocks
-                Cruiser:\t\t 3 blocks
-                Battleship:\t 4 blocks
-                Aircraft Carrier: 5 blocks
-                
-                Sink all ships to win.
-                GoodLuck!!!""";
+        notification = "Sink all ships to win!";
 
         // Optional test loop
-        test();
+        // test();
 
     }
 
@@ -89,7 +80,6 @@ public class Game {
             button.setUserData("Clicked");
             numGuess++;
             notification = checkShips(button);
-            shipsRemaining = shipsList.size();
             if (shipsRemaining == 0 ) {
                 notification = "All ships are dead!\n" +
                         "It took you " + numGuess + " guesses.";
@@ -124,7 +114,7 @@ public class Game {
                     break;
                 }
                 else {
-                    shipsList.remove(ship);
+                    shipsRemaining--;
                     result = ship.getShipName() + " has sunk!";
                 }
                 break;
@@ -167,5 +157,8 @@ public class Game {
         return this.notification;
     }
 
+    public ArrayList<Ship> getShipsList() {
+        return this.shipsList;
+    }
 
 }

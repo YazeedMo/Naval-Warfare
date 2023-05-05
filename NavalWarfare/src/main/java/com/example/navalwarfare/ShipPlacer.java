@@ -11,6 +11,7 @@ public class ShipPlacer {
     private final int TOT_NUM_BUTTONS = GuiController.getButtonList().size();
     private final int HORIZONTAL_INCREMENT = 1;
 
+    // Attempts to sign buttons to ship
     public ArrayList<Button> assignShipButtons(int shipSize) {
 
         Button[] finalShipButtons = new Button[shipSize];

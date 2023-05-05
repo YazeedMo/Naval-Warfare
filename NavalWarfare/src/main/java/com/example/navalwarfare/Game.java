@@ -52,7 +52,7 @@ public class Game {
 
         Ship ship1 = new Ship("Aircraft Carrier", Color.ORANGE, shipPlacer.assignShipButtons(5));
         Ship ship2 = new Ship("Battleship", Color.RED, shipPlacer.assignShipButtons(4));
-        Ship ship3 = new Ship("Destroyer", Color.YELLOW, shipPlacer.assignShipButtons(3));
+        Ship ship3 = new Ship("Destroyer", Color.DARKBLUE, shipPlacer.assignShipButtons(3));
         Ship ship4 = new Ship("Submarine", Color.GREEN, shipPlacer.assignShipButtons(3));
         Ship ship5 = new Ship("Patrol Boat", Color.PURPLE, shipPlacer.assignShipButtons(2));
 
@@ -144,6 +144,8 @@ public class Game {
 
     }
 
+    // region GETTERS AND SETTERS
+
     // Getters and setters
     public int getShipsRemaining() {
         return this.shipsRemaining;
@@ -160,5 +162,7 @@ public class Game {
     public ArrayList<Ship> getShipsList() {
         return this.shipsList;
     }
+
+    // endregion
 
 }

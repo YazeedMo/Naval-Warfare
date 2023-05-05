@@ -49,6 +49,8 @@ public class Ship {
 
     }
 
+    // region GETTERS AND SETTERS
+
     // Getters and setters
     public String getShipName() {
         return this.shipName;
@@ -62,4 +64,5 @@ public class Ship {
         return this.shipButtons.size();
     }
 
+    // endregion
 }

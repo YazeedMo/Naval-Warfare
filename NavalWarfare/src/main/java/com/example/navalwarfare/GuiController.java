@@ -55,6 +55,8 @@ public class GuiController {
         updateGui();
     }
 
+    // region METHODS FOR SETTING UP THE GUI
+
     // Places alphanumeric coordinates on grid axis
     private void setBoardGridAxis() {
 
@@ -70,6 +72,31 @@ public class GuiController {
             Label numberLabel = createBoardGridLabels(String.valueOf(i));
             boardGrid.add(numberLabel, i, 0);
         }
+
+    }
+
+    // Creates label for boardGrid
+    private Label createBoardGridLabels(String str) {
+
+        Label label = new Label(str);
+
+        // Size
+        label.setMaxHeight(Double.MAX_VALUE);
+        label.setMaxWidth(Double.MAX_VALUE);
+
+        // Border
+        Color borderColor = Color.BLACK;
+        BorderStrokeStyle borderStrokeStyle = BorderStrokeStyle.SOLID;
+        CornerRadii cornerRadii = new CornerRadii(1);
+        BorderWidths borderWidths = new BorderWidths(1);
+        BorderStroke borderStroke = new BorderStroke(borderColor, borderStrokeStyle, cornerRadii, borderWidths);
+        Border border = new Border(borderStroke);
+        label.setBorder(border);
+
+        // Layout
+        label.setAlignment(Pos.CENTER);
+
+        return label;
 
     }
 
@@ -98,40 +125,14 @@ public class GuiController {
 
         // Create a label for each ship and link the label to its ship
         for (int i = 0; i < numShips; i++) {
-            Label label = createShipStatusLabel();
-            label.setUserData(game.getShipsList().get(i));  // Link ship to label
+            Label label = createShipStatusLabel(game.getShipsList().get(i));
+            shipStatusLabelVBox.getChildren().add(label);
             shipStatusLabels.add(label);
-            shipStatusLabelVBox.getChildren().add(label);  // Add label to GUI
         }
 
     }
 
-    // Creates label
-    private Label createBoardGridLabels(String str) {
-
-        Label label = new Label(str);
-
-        // Size
-        label.setMaxHeight(Double.MAX_VALUE);
-        label.setMaxWidth(Double.MAX_VALUE);
-
-        // Border
-        Color borderColor = Color.BLACK;
-        BorderStrokeStyle borderStrokeStyle = BorderStrokeStyle.SOLID;
-        CornerRadii cornerRadii = new CornerRadii(1);
-        BorderWidths borderWidths = new BorderWidths(1);
-        BorderStroke borderStroke = new BorderStroke(borderColor, borderStrokeStyle, cornerRadii, borderWidths);
-        Border border = new Border(borderStroke);
-        label.setBorder(border);
-
-        // Layout
-        label.setAlignment(Pos.CENTER);
-
-        return label;
-
-    }
-
-    // Creates button
+    // Creates button bordGrid
     private Button createBoardGridButtons() {
 
         Button button = new Button();
@@ -162,19 +163,6 @@ public class GuiController {
         return button;
     }
 
-    // Creates label for ship statuses
-    private Label createShipStatusLabel() {
-
-        Label label = new Label();
-
-        // Font
-        Font font = Font.font("System", FontWeight.BOLD, 15);
-        label.setFont(font);
-
-        return label;
-
-    }
-
     // Button EventHandler
     private class buttonClicked implements EventHandler<ActionEvent> {
 
@@ -193,6 +181,36 @@ public class GuiController {
         }
     }
 
+    // Creates label for ship statuses
+    private Label createShipStatusLabel(Ship ship) {
+
+        Label label = new Label();
+
+        // Link to ship
+        label.setUserData(ship);
+
+        // Text objects holding the name and size of the ship
+        Text shipName = new Text(ship.getShipName());
+        shipName.setFont(Font.font("System", FontWeight.BOLD, 15));
+        shipName.setFill(ship.getShipColor());
+        Text livesRemaining = new Text(" : " + ship.getShipSize());
+        livesRemaining.setFont(Font.font("System", FontWeight.BOLD, 15));
+
+        // Add Text objects to a FlowPane (Displays Text objects next to each other not on top of each other)
+        FlowPane flowPane = new FlowPane();
+        flowPane.getChildren().addAll(shipName, livesRemaining);
+
+        // Add FlowPane to label
+        label.setGraphic(flowPane);
+
+        return label;
+
+    }
+
+    // endregion
+
+    // region MAIN GUI FUNCTIONS
+
     // Updates all Gui components
     private void updateGui() {
 
@@ -200,17 +218,20 @@ public class GuiController {
         remainingShipsLabel.setText(String.valueOf(game.getShipsRemaining()));
         notificationLabel.setText(game.getNotification());
 
-        // shipsStatusLabels updates
-        for (int i = 0; i < game.getShipsList().size(); i++) {
+        // Update shipStatusLabels
+        for (Label label : shipStatusLabels) {
 
-            Label label = shipStatusLabels.get(i);
-            Ship ship = (Ship) shipStatusLabels.get(i).getUserData();
+            // Get label and its ship
+            Ship ship = (Ship) label.getUserData();
 
-            Text shipName = new Text(ship.getShipName());
-            shipName.setFont(Font.font("System", FontWeight.BOLD, 15));
-            shipName.setFill(ship.getShipColor());
-            label.setGraphic(shipName);
-            label.setText(": " + ship.getShipSize());
+            // Get Text object displaying remaining lives
+            Text livesRemaining = (Text) ((FlowPane) label.getGraphic()).getChildren().get(1);
+            livesRemaining.setText(" : " + ship.getShipSize());
+
+            if (ship.getShipSize() == 0) {
+                livesRemaining.setText(" : SUNK");
+            }
+
         }
 
     }
@@ -246,9 +267,15 @@ public class GuiController {
 
     }
 
+    // endregion
+
+    // region GETTERS AND SETTERS
+
     // Getters and setters
     public static ArrayList<Button> getButtonList() {
         return buttonList;
     }
+
+    // endregion
 
 }

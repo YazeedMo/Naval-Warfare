@@ -67,7 +67,7 @@ public class Game {
         notification = "Sink all ships to win!";
 
         // Optional test loop
-        // test();
+        test();
 
     }
 
@@ -123,15 +123,21 @@ public class Game {
         return result;
     }
 
+    // Displays result when games ends
+    public void endGame() throws IOException {
+
+    }
+
     // Restarts the game
     public void restartGame(Stage stage) throws IOException {
 
         // Reset Game instance
         instance = null;
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("NavalWarfare.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Game.fxml")));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.show();
 
     }
 

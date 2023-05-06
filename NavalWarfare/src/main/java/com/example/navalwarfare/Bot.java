@@ -24,7 +24,7 @@ public class Bot implements Runnable {
         Random random = new Random();
 
         Game game = Game.getInstance();
-        ArrayList<Button> buttonList = GuiController.getButtonList();
+        ArrayList<Button> buttonList = GameGuiController.getButtonList();
         int numButtons = buttonList.size();
 
         sleep(2000);

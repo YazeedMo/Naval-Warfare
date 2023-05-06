@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class ShipPlacer {
 
-    private final int TOT_NUM_BUTTONS = GuiController.getButtonList().size();
+    private final int TOT_NUM_BUTTONS = GameGuiController.getButtonList().size();
     private final int HORIZONTAL_INCREMENT = 1;
 
     // Attempts to sign buttons to ship
@@ -52,7 +52,7 @@ public class ShipPlacer {
 
         Random random = new Random();
         int randomIndex = random.nextInt(TOT_NUM_BUTTONS);
-        return GuiController.getButtonList().get(randomIndex);
+        return GameGuiController.getButtonList().get(randomIndex);
 
     }
 
@@ -72,11 +72,11 @@ public class ShipPlacer {
         int buttonListSize = buttonList.length;
 
         Button firstButton = buttonList[0];
-        int buttonListIndex = GuiController.getButtonList().indexOf(firstButton);
+        int buttonListIndex = GameGuiController.getButtonList().indexOf(firstButton);
 
         for (int i = 1; i < buttonListSize; i++) {
             buttonListIndex = buttonListIndex + increment;
-            Button nextButton = GuiController.getButtonList().get(buttonListIndex);
+            Button nextButton = GameGuiController.getButtonList().get(buttonListIndex);
             buttonList[i] = nextButton;
         }
 
@@ -94,15 +94,15 @@ public class ShipPlacer {
         }
         else {
             // Check if last button fits on grid
-            int lastButtonIndex = GuiController.getButtonList().indexOf(lastButton);
-            return (lastButtonIndex < GuiController.getButtonList().size());
+            int lastButtonIndex = GameGuiController.getButtonList().indexOf(lastButton);
+            return (lastButtonIndex < GameGuiController.getButtonList().size());
         }
     }
 
     // Calculates row number based on index
     private int getRowNumber(Button button) {
 
-        int buttonListIndex = GuiController.getButtonList().indexOf(button);
+        int buttonListIndex = GameGuiController.getButtonList().indexOf(button);
         return (buttonListIndex / 10) - 1;
 
     }

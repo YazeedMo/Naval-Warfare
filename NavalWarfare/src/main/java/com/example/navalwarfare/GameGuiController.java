@@ -4,8 +4,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,12 +16,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class GuiController {
+public class GameGuiController {
 
     // Gui components
     @FXML
@@ -30,8 +34,6 @@ public class GuiController {
     private Label remainingShipsLabel;
     @FXML
     private Label notificationLabel;
-    @FXML
-    private Button restartButton;
     @FXML
     private VBox shipStatusLabelVBox;
 
@@ -225,7 +227,7 @@ public class GuiController {
             Ship ship = (Ship) label.getUserData();
 
             // Get Text object displaying remaining lives
-            Text livesRemaining = (Text) ((FlowPane) label.getGraphic()).getChildren().get(1);
+            Text livesRemaining = (Text) (((FlowPane) label.getGraphic()).getChildren().get(1));
             livesRemaining.setText(" : " + ship.getShipSize());
 
             if (ship.getShipSize() == 0) {
@@ -249,22 +251,29 @@ public class GuiController {
 
         updateGui();
 
-        restartButton.setVisible(true);
-        restartButton.setDisable(false);
+        // Get the current Stage
+        Stage gameStage = (Stage) (notificationLabel.getScene().getWindow());
 
-    }
+        // Open the end Game window
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("EndGame.fxml")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Scene scene = new Scene(root);
+        Stage endGameStage = new Stage();
 
-    // Restarts the game
-    @FXML
-    private void restartGame(ActionEvent event) throws IOException {
+        // Stage settings
+        endGameStage.initOwner(gameStage);
+        endGameStage.initModality(Modality.WINDOW_MODAL);
+        endGameStage.setOnCloseRequest(event -> {
+            endGameStage.close();
+            gameStage.close();
+        });
 
-        // Get stage
-        Node node = (Node) event.getSource();
-        Scene scene = node.getScene();
-        Stage stage = (Stage) scene.getWindow();
-
-        game.restartGame(stage);
-
+        endGameStage.setScene(scene);
+        endGameStage.show();
     }
 
     // endregion

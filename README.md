@@ -2,7 +2,7 @@
 This is a Java program based on the classic board game Battleship. The goal for the player is to locate and sink all of the randomly placed ships. The game has a graphical user interface, with a grid-based board and interactive buttons for making guesses. Once the player has destroyed all ships, the number of attempts that were taken is displayed. The player then has the option to restart the game.
 
 # How To Play
-1. Launch the game by running the **NavalWarfareApplication.java** file.
+1. Launch the game by running the **Main.java** file.
 2. Click on a cell on the board to make a guess.
 3. If the cell contains part of a ship, it will be marked as a hit, otherwise it will be marked as a miss.
 4. Continue guessing until all ships have been sunk.

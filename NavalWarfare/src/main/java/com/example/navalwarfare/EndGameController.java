@@ -2,11 +2,15 @@ package com.example.navalwarfare;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class EndGameController {
 
@@ -53,7 +57,7 @@ public class EndGameController {
         Stage stage = (Stage) (((Node) (event.getTarget())).getScene().getWindow());
         // Get the game stage
         Stage gameStage = (Stage) (stage.getOwner());
-        // Close current stagew
+        // Close current stage
         stage.close();
 
         try {
@@ -66,10 +70,28 @@ public class EndGameController {
 
 
     @FXML
-    void buttonMainMenuClicked(ActionEvent event) {
+    void buttonMainMenuClicked(ActionEvent event) throws IOException {
+
+        Stage stage = getStage(event);
+
+        // Get the game stage
+        Stage gameStage = (Stage) (stage.getOwner());
+        gameStage.close();
+
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainMenu.fxml")));
+        Scene scene = new Scene(root);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.show();
 
     }
 
+    // Get current stage
+    private Stage getStage(ActionEvent event) {
+
+        return (Stage) (((Node) (event.getSource())).getScene().getWindow());
+
+    }
 
 
 }

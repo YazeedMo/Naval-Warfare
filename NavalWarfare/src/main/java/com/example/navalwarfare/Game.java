@@ -67,7 +67,7 @@ public class Game {
         notification = "Sink all ships to win!";
 
         // Optional test loop
-        test();
+        // test();
 
     }
 
